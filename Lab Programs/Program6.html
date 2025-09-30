@@ -3,35 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Analyze</title>
+    <title>Document</title>
 </head>
 <body>
-    <h2>Mini Text Analyzer</h2>
-    <textarea id="paragraphinput" placeholder="Enter a paragraph" rows="6" cols="60"></textarea><br>
-    <button onclick="analyzeText()">Analyze</button>
-    <pre id="output"></pre>
+    <input type="text" placeholder="Enter your task" id="inputvalue">
+    <button onclick="addTask()">Add Task</button>
+    <ul id="listcontent"></ul>
     <script>
-        function analyzeText(){
-            const text = document.getElementById("paragraphinput").value;
-            const totalChars = text.length;
-            const words = text.match(/\b\w+\b/g) || [];
-            const totalwords = words.length;
-            const totalsentences = (text.match(/[.!?]/g) || []).length;
-            const uniquewords = [...new Set(words.map((w)=>w.toLowerCase()))];
-            const freq = {};
-            words.forEach((word) => {
-                const w = word.toLowerCase();
-                freq[w] = (freq[w] || 0)+1
+        function addTask(){
+            let text = document.getElementById("inputvalue").value.trim();
+            if(text==="") return;
+
+            let li=document.createElement("li");
+            li.textContent=text;
+            
+            document.getElementById("listcontent").appendChild(li);
+
+            const removeBtn = document.createElement("button");
+            removeBtn.textContent = "remove";
+
+            removeBtn.addEventListener("click",function(e){
+                li.remove();
             });
-            const sortedFreq = Object.entries(freq).sort((a,b) => b[1] - a[1]);
-            const output = `
-                Total Character: ${totalChars}
-                Total Words: ${totalwords}
-                Total sentences: ${totalsentences}
-                Unique Words: ${uniquewords.join(",")}
-                Word Frequency: ${sortedFreq.map(([word,count]) => word+": "+count).join("\n")}
-            `
-            document.getElementById("output").textContent = output;
+
+            li.appendChild(removeBtn);
+
+            document.getElementById("inputvalue").value = "";
         }
     </script>
 </body>
